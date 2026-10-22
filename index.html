@@ -237,7 +237,9 @@ const ANSICHTEN = {
       {k:"link", t:"Quelle", sort: f => f.link.art, html: f => `<a class="ext${f.link.quelle.startsWith("justETF") ? " sek" : ""}" href="${esc(f.link.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${linkText(f.link)} ↗</a>`},
     ],
     standardSort: {k:"volumen", dir:1},
-    gruppe: f => `${f.index || "ohne Index"} · ${f.absicherung ? bez(f.absicherung) : ""}`,
+    // Gruppen nach Index-ID (gleicher Index trotz anderer Schreibweise, 22.10.2026) und Absicherung; Text = Indexname
+    gruppe: f => `${f.index_id || f.index || "ohne Index"}|${f.absicherung || ""}`,
+    gruppeText: f => `${f.index || "ohne Index"} · ${f.absicherung ? bez(f.absicherung) : ""}`,
   },
   anleihen: {
     daten: D.anleihen,
@@ -356,8 +358,8 @@ function zeichnen() {
     for (const x of zeilen) { const g = A.gruppe(x); if (!G.has(g)) G.set(g, []); G.get(g).push(x) }
     const rangKey = (x) => [x.rang == null ? 1 : 0, (x.rang_basis || "").startsWith("TD") ? 0 : 1, x.reihenfolge ?? 999, -(x.volumen || 0)];
     const vgl = (a, b) => { const p = rangKey(a), q = rangKey(b); for (let i = 0; i < p.length; i++) if (p[i] !== q[i]) return p[i] - q[i]; return a.name.localeCompare(b.name, "de") };
-    const gruppen = [...G.entries()].map(([g, xs]) => ({g, xs: xs.sort(vgl), max: Math.max(0, ...xs.map(x => x.volumen || 0))}))
-      .sort((a, b) => b.max - a.max || a.g.localeCompare(b.g, "de"));
+    const gruppen = [...G.entries()].map(([g, xs]) => ({g, t: A.gruppeText ? A.gruppeText(xs[0]) : g, xs: xs.sort(vgl), max: Math.max(0, ...xs.map(x => x.volumen || 0))}))
+      .sort((a, b) => b.max - a.max || a.t.localeCompare(b.t, "de"));
     for (const gr of gruppen) {   // je Fonds eine Position: thesaurierend bevorzugt, außer der Ertrag-Filter ist gesetzt
       const gesehen = new Map();
       for (const x of gr.xs) {
@@ -366,9 +368,9 @@ function zeichnen() {
       }
       gr.klassen = gr.xs.length; gr.xs = [...gesehen.values()].sort(vgl);
     }
-    for (const {g, xs, max, klassen} of gruppen.slice(0, glimit)) {
+    for (const {g, t, xs, max, klassen} of gruppen.slice(0, glimit)) {
       const auf = offen.has(g);
-      html += `<tr class="gruppe"><td colspan="${A.spalten.length}">${esc(g)} <span class="isin">· ${xs.length} Fonds${klassen > xs.length ? ` (${klassen} Anteilsklassen)` : ""} · größter ETF ${f0.format(max)} Mio. €</span></td></tr>`;
+      html += `<tr class="gruppe"><td colspan="${A.spalten.length}">${esc(t)} <span class="isin">· ${xs.length} Fonds${klassen > xs.length ? ` (${klassen} Anteilsklassen)` : ""} · größter ETF ${f0.format(max)} Mio. €</span></td></tr>`;
       xs.slice(0, auf ? xs.length : 3).forEach(x => html += zeileHtml(x));
       if (xs.length > 3) html += `<tr class="aufklapp"><td colspan="${A.spalten.length}"><button class="linkbtn" data-g="${esc(g)}">${auf ? "Weniger anzeigen" : `${xs.length - 3} weitere anzeigen`}</button></td></tr>`;
     }
@@ -412,7 +414,8 @@ function oeffnen(isin) {
     html += `<div class="sect"><h3>Merkmale</h3><dl>
       ${zeile("Anbieter", esc(f.anbieter))}
       ${zeile("Kategorie", esc(bez(f.kategorie)))}
-      ${zeile("Index", esc(f.index || "–"), f.esg ? "ESG-Index (laut Indexname, Regel der Grobsortierung)" : "")}
+      ${zeile("Index", esc(f.index || "–"), [!f.index_id ? "" : f.index_id.startsWith("name:") ? "Zuordnung über den Namen (keine belegte Index-ID)" : "Index-ID " + f.index_id, f.esg ? "ESG-Index (laut Indexname, Regel der Grobsortierung)" : ""].filter(Boolean).join(" · "))}
+      ${f.index_pruefung ? zeile("Index prüfen", `<span class="warn">${esc(f.index_pruefung)}</span>`, "Abgleich mit Index-Tickern laut Borsa Italiana (Sekundärquelle)") : ""}
       ${zeile("Priorität", esc(bez(f.prioritaet)), f.gruppe ? "Gruppe der Grobsortierung: " + f.gruppe : "")}
       ${zeile("TER", f.ter == null ? "–" : f2.format(f.ter) + " %", H.ter_prozent)}
       ${zeile("Fondsvolumen", f.volumen == null ? "–" : f0.format(f.volumen) + " Mio. €", f.volumen_quelle)}
@@ -432,7 +435,7 @@ function oeffnen(isin) {
     html += `<div class="sect"><h3>Deutsche Börsenplätze${f.xetra ? " · Xetra" : ""}</h3><div class="tags">${f.boersen.map(m => `<span class="mic">${esc(m)}</span>`).join("") || "keine Angabe"}</div></div>`;
     const kl = D.fonds.filter(y => y.isin !== f.isin && y.fonds_id === f.fonds_id);
     if (kl.length) html += `<div class="sect"><h3>Weitere Anteilsklassen desselben Fonds</h3><div class="verw">${kl.map(knopf).join("")}</div></div>`;
-    const gl = D.fonds.filter(y => y.fonds_id !== f.fonds_id && y.index && y.index === f.index && y.absicherung === f.absicherung).sort((p, q) => (p.reihenfolge ?? 999) - (q.reihenfolge ?? 999));
+    const gl = D.fonds.filter(y => y.fonds_id !== f.fonds_id && (y.index_id || y.index) && (y.index_id || y.index) === (f.index_id || f.index) && y.absicherung === f.absicherung).sort((p, q) => (p.reihenfolge ?? 999) - (q.reihenfolge ?? 999));
     if (gl.length) html += `<div class="sect"><h3>Andere Fonds auf denselben Index, Absicherung ${esc(bez(f.absicherung))}</h3><div class="verw">${gl.map(knopf).join("")}</div></div>`;
   } else {
     html += `<div class="sect"><h3>Merkmale</h3><dl>
