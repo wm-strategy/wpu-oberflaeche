@@ -1,134 +1,17 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style><title>Wertpapieruniversum</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<style>
-/* Layout: kompakte Kopfzeile mit Kennzahlen, Filterleiste, sortierbare Tabelle; Detail als Seitenleiste (Telefon: ganze Fläche) */
-:root {
-  --bg: #f6f7f8; --surface: #ffffff; --fg: #17202a; --muted: #5d6b78; --line: #dde2e7; --line-strong: #c4ccd4;
-  --accent: #1d5c7d; --accent-soft: #e3eef4;
-  --ok: #1f7a4d; --ok-soft: #e1f2e8; --warn: #9a6400; --warn-soft: #fbf0d9; --bad: #a83a32; --bad-soft: #f8e4e1;
-  --watch: #5a4fa3; --watch-soft: #ebe8f7; --wait: #5d6b78; --wait-soft: #eceff2;
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style><title>Wertpapieruniversum</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"><style>:root {
   --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-}
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #11161b; --surface: #182028; --fg: #e4e9ee; --muted: #95a3b0; --line: #2a343e; --line-strong: #3a4652;
-  --accent: #7cb8d6; --accent-soft: #1d3442;
-  --ok: #6cc797; --ok-soft: #173327; --warn: #e2b45c; --warn-soft: #3a2d12; --bad: #ec8b82; --bad-soft: #3d1f1c;
-  --watch: #ada4ec; --watch-soft: #2a2648; --wait: #a4b0bb; --wait-soft: #252e37; color-scheme: dark } }
-:root[data-theme="dark"] {
-  --bg: #11161b; --surface: #182028; --fg: #e4e9ee; --muted: #95a3b0; --line: #2a343e; --line-strong: #3a4652;
-  --accent: #7cb8d6; --accent-soft: #1d3442;
-  --ok: #6cc797; --ok-soft: #173327; --warn: #e2b45c; --warn-soft: #3a2d12; --bad: #ec8b82; --bad-soft: #3d1f1c;
-  --watch: #ada4ec; --watch-soft: #2a2648; --wait: #a4b0bb; --wait-soft: #252e37; color-scheme: dark }
-* { box-sizing: border-box }
-[hidden] { display: none !important }
-body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 14px; line-height: 1.45; }
-.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px; max-width: 1500px; margin: 0 auto; display: grid; gap: 16px }
-header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px }
-h1 { font-size: 22px; font-weight: 600; margin: 0; letter-spacing: -0.01em; text-wrap: balance }
-.stand { color: var(--muted); font-size: 12.5px }
-.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line) }
-.tab { appearance: none; border: 0; background: none; font: inherit; color: var(--muted); padding: 8px 14px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; font-weight: 500 }
-.tab[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent) }
-.tab .n { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-left: 6px }
-.summary { display: flex; flex-wrap: wrap; gap: 8px }
-.sumchip { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 6px 10px; cursor: pointer; font: inherit; color: var(--fg) }
-.sumchip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft) }
-.sumchip b { font-family: var(--mono); font-weight: 500 }
-.dot { width: 8px; height: 8px; border-radius: 50% }
-.kopfrechts { display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap }
-.einst, .pflege { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; gap: 10px }
-.einst h2, .pflege h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin: 0; font-weight: 500 }
-.einst p { margin: 0; max-width: 70ch }
-.einst-felder { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px }
-.einst label, .pflege label { display: grid; gap: 3px; font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; min-width: 0 }
-.einst input, .pflege input[type="text"] { font: inherit; font-size: 13.5px; text-transform: none; letter-spacing: 0; color: var(--fg); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 5px; padding: 7px 9px; width: 100%; min-width: 0; font-family: var(--mono) }
-.einst-knoepfe, .pflege-zeile { display: flex; gap: 8px; flex-wrap: wrap; align-items: end }
-.pflege-zeile label { flex: 1 1 260px }
-.btn.primaer { background: var(--accent); color: var(--surface); border-color: var(--accent) }
-.btn:disabled { opacity: .5; cursor: progress }
-.meldung { margin: 0; font-size: 13px; min-height: 1em } .meldung a { color: var(--accent) }
-table.ent td { white-space: normal }
-.refs { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 6px }
-.refs h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin: 0; font-weight: 500; display: flex; justify-content: space-between; gap: 8px }
-.refs table { font-size: 12.5px } .refs td { padding: 4px 8px; border-bottom: 1px solid var(--line); white-space: normal; vertical-align: top }
-.refs td.f { color: var(--muted); white-space: nowrap } .refs tr:last-child td { border-bottom: 0 }
-.refs a { color: var(--accent); text-decoration: none } .refs a:hover { text-decoration: underline }
-.refbox { overflow-x: auto }
-.warn { color: var(--warn) } .bad { color: var(--bad) }
-.badge { display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; border-radius: 3px; padding: 0 5px; margin-left: 6px; vertical-align: 1px; background: var(--accent-soft); color: var(--accent) }
-.badge.merk { background: var(--watch-soft); color: var(--watch) }
-.filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 10px; align-items: end }
-.filters label { display: grid; gap: 3px; font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; min-width: 0 }
-.filters input, .filters select { font: inherit; font-size: 13.5px; text-transform: none; letter-spacing: 0; color: var(--fg); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 5px; padding: 6px 8px; width: 100%; min-width: 0 }
-.filters .suche { grid-column: span 2 }
-@media (max-width: 520px) { .filters .suche { grid-column: 1 / -1 } }
-input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible, tr:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px }
-.bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; color: var(--muted); font-size: 13px }
-.bar .links { display: flex; gap: 12px; flex-wrap: wrap; align-items: center }
-.linkbtn { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px }
-.check { display: inline-flex; gap: 6px; align-items: center; color: var(--fg) }
-.tablebox { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px }
-table { border-collapse: collapse; width: 100%; font-size: 13px }
-th, td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; white-space: nowrap }
-th { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); font-weight: 500; position: sticky; top: 0; background: var(--surface); cursor: pointer; user-select: none }
-th[aria-sort="ascending"]::after { content: " ▲"; font-size: 9px } th[aria-sort="descending"]::after { content: " ▼"; font-size: 9px }
-td.name { white-space: normal; min-width: 240px; max-width: 420px }
-td.name .sub { color: var(--muted); font-size: 12px }
-td.name .klassen a.zw { color: var(--accent); text-decoration: none } td.name .klassen a.zw:hover { text-decoration: underline }
-td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 12.5px }
-.isin { font-family: var(--mono); font-size: 12px; color: var(--muted) }
-tbody tr { cursor: pointer } tbody tr:hover { background: var(--accent-soft) }
-tbody tr.sel { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent) }
-tr.gruppe td { background: var(--bg); font-weight: 600; font-size: 12.5px; cursor: default; white-space: normal }
-tr.gruppe:hover td { background: var(--bg) }
-tr.aufklapp td { padding: 4px 10px 8px; cursor: default } tr.aufklapp:hover { background: none }
-.pill { display: inline-block; border-radius: 99px; padding: 1px 8px; font-size: 12px; font-weight: 500; background: var(--wait-soft); color: var(--wait) }
-.s-geeignet { background: var(--ok-soft); color: var(--ok) } .s-bedingt { background: var(--warn-soft); color: var(--warn) }
-.s-ausgeschlossen { background: var(--bad-soft); color: var(--bad) } .s-watchlist { background: var(--watch-soft); color: var(--watch) }
-.s-pruefen { background: var(--wait-soft); color: var(--wait) }
-.fn { display: inline-block; border: 1px solid var(--line-strong); border-radius: 4px; padding: 0 5px; font-size: 11.5px; margin: 1px 3px 1px 0; color: var(--fg) }
-.rang { font-family: var(--mono); font-size: 12px } .rang .g { color: var(--muted) }
-a.ext { color: var(--accent); text-decoration: none; font-size: 12.5px } a.ext:hover { text-decoration: underline }
-a.ext.sek { color: var(--muted) }
-.more { display: flex; justify-content: center; padding: 10px }
-.btn { appearance: none; font: inherit; border: 1px solid var(--line-strong); background: var(--surface); color: var(--fg); border-radius: 5px; padding: 6px 12px; cursor: pointer }
-.btn:hover { border-color: var(--accent) }
-.leer { padding: 28px; text-align: center; color: var(--muted) }
-/* Detail */
-.detail { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 100%); background: var(--surface); border-left: 1px solid var(--line-strong); box-shadow: -8px 0 24px rgba(0,0,0,.12); z-index: 20; overflow-y: auto; padding: calc(16px + env(safe-area-inset-top, 0px)) max(18px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) 18px; display: grid; gap: 14px; align-content: start }
-.detail h2 { font-size: 17px; margin: 0; font-weight: 600; text-wrap: balance; line-height: 1.3 }
-.dkopf { display: flex; gap: 12px; justify-content: space-between; align-items: start }
-.close { appearance: none; border: 1px solid var(--line-strong); background: var(--surface); color: var(--fg); border-radius: 5px; width: 32px; height: 32px; font-size: 18px; cursor: pointer; flex: none }
-.dlink { display: inline-flex; gap: 8px; align-items: center; background: var(--accent); color: var(--surface); padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 500; justify-self: start }
-.dlink.sek { background: var(--surface); color: var(--accent); border: 1px solid var(--accent) }
-.hint { font-size: 12px; color: var(--muted) }
-.sect h3 { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin: 0 0 6px; font-weight: 500 }
-dl { display: grid; grid-template-columns: minmax(110px, 38%) 1fr; gap: 5px 12px; margin: 0; font-size: 13px }
-dt { color: var(--muted) } dd { margin: 0; min-width: 0; overflow-wrap: anywhere }
-dd .q { display: block; font-size: 11.5px; color: var(--muted) }
-ul.plain { margin: 0; padding-left: 18px; display: grid; gap: 3px; font-size: 13px }
-.tags { display: flex; flex-wrap: wrap; gap: 4px }
-.mic { font-family: var(--mono); font-size: 11.5px; border: 1px solid var(--line); border-radius: 3px; padding: 0 4px }
-.verw { display: grid; gap: 4px; font-size: 13px }
-.verw button { text-align: left; appearance: none; background: none; border: 1px solid var(--line); border-radius: 5px; padding: 6px 8px; font: inherit; color: var(--fg); cursor: pointer; display: flex; justify-content: space-between; gap: 10px }
-.verw button:hover { border-color: var(--accent) }
-.verw .r { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap }
-@media (prefers-reduced-motion: no-preference) { .detail { animation: rein .16s ease-out } @keyframes rein { from { transform: translateX(24px); opacity: .6 } } }
-
-/* Startseite für Besucher ohne Schlüssel ("Landung"): bewusst immer Nachthimmel, in beiden Farbschemata gleich */
-:root {
   --space: #0b1020; --space-2: #151d38; --space-fg: #e6ebf7; --space-muted: #a3aecb; --space-line: rgba(163,174,203,.22);
   --sun: #f2b84b; --sun-glow: rgba(242,184,75,.28); --p-liq: #5cc8c2; --p-lauf: #7aa2ec; --p-anker: #c3cad6; --p-gold: #e9c45e; --p-komet: #f3f6ff;
 }
-body.gast { background: var(--space) }
-body.gast .wrap > :not(#landung):not(#einst) { display: none !important }
+body.gast { background: var(--space); font-family: var(--font); font-size: 14px; line-height: 1.45; margin: 0 }
+body.gast > .wrap, body.gast > .detail { display: none !important }
+.l-huelle { padding: 20px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px)); max-width: 1500px; margin: 0 auto }
+.l-huelle, .l-huelle * { box-sizing: border-box }
 .landung { position: relative; color: var(--space-fg); border-radius: 14px; overflow: hidden; display: grid; gap: 18px; padding: 28px 22px 22px;
   background: radial-gradient(120% 90% at 50% 0%, var(--space-2), var(--space) 70%) }
 .landung > * { position: relative }
-.landung h1 { font-size: clamp(24px, 5vw, 38px); line-height: 1.15; max-width: 22ch }
+.landung h1 { margin: 0; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; font-size: clamp(24px, 5vw, 38px); line-height: 1.15; max-width: 22ch }
 .landung .lead { margin: 0; font-size: 15.5px; color: var(--space-muted); max-width: 62ch; text-wrap: pretty }
 .landung .lead b { color: var(--space-fg); font-weight: 500 }
 .l-buehne { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 18px; align-items: center }
@@ -168,18 +51,13 @@ body.gast .wrap > :not(#landung):not(#einst) { display: none !important }
 .l-band .plus { color: #7fd6a5 } .l-band .minus { color: #f19a91 }
 .l-fuss { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 18px; font-size: 12.5px; color: var(--space-muted) }
 .l-fuss p { margin: 0 }
-.l-fuss .linkbtn { color: var(--space-muted) }
-.l-fuss .linkbtn:hover { color: var(--space-fg) }
 @media (prefers-reduced-motion: no-preference) {
   .l-band .spur { animation: laufband 80s linear infinite }
   @keyframes laufband { to { transform: translateX(-50%) } }
 }
-@media (prefers-reduced-motion: reduce) { .l-band { white-space: normal; padding-inline: 22px } .l-band .inhalt + .inhalt { display: none } }
-</style>
-</head><body>
-
-<div class="wrap">
-  <section class="landung" id="landung" hidden aria-labelledby="l-titel">
+@media (prefers-reduced-motion: reduce) { .l-band { white-space: normal; padding-inline: 22px } .l-band .inhalt + .inhalt { display: none } }</style></head><body>
+<div class="l-huelle" id="landung-huelle" hidden>
+  <section class="landung" id="landung" aria-labelledby="l-titel">
     <div class="l-sterne" id="l-sterne" aria-hidden="true"><i></i><i class="b"></i></div>
     <h1 id="l-titel">Willkommen im Wertpapier&shy;universum</h1>
     <p class="lead">Du bist hier gelandet, vermutlich aus Versehen. Kein Problem: <b>Die meisten Anleger landen irgendwo aus Versehen</b>, und oft geht es trotzdem gut aus. Dieses Universum gehört zu einem privaten Werkzeug. Die Daten bleiben unter Verschluss, zu sehen gibt es nur die Planeten.</p>
@@ -237,397 +115,8 @@ body.gast .wrap > :not(#landung):not(#einst) { display: none !important }
       <p>Keine Anlageberatung. Nicht einmal eine Anlagemeinung. Alle Kurse frei erfunden.</p>
     </div>
   </section>
-  <header>
-    <h1>Wertpapieruniversum</h1>
-    <div class="kopfrechts"><span class="stand" id="stand"></span><button class="linkbtn" id="einst-oeffnen" hidden>Einstellungen</button></div>
-  </header>
-  <section class="einst" id="einst" hidden aria-label="Verbindung">
-    <h2>Verbindung zum Repo</h2>
-    <p>Die Seite lädt die Daten mit deinem GitHub-Schlüssel direkt aus dem privaten Repo. Repo und Schlüssel bleiben nur in diesem Browser gespeichert.</p>
-    <div class="einst-felder">
-      <label for="e-repo">Repo (Besitzer/Name)<input id="e-repo" type="text" autocomplete="off" spellcheck="false" placeholder="besitzer/repo"></label>
-      <label for="e-token">Schlüssel (fine-grained token)<input id="e-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…"></label>
-    </div>
-    <p class="hint">Rechte: nur dieses Repo, „Contents: Read“ und „Actions: Read and write“. Anlegen unter GitHub → Settings → Developer settings → Fine-grained tokens.</p>
-    <div class="einst-knoepfe"><button class="btn primaer" id="e-speichern">Speichern und laden</button><button class="btn" id="e-loeschen">Schlüssel aus diesem Browser löschen</button></div>
-    <p class="meldung" id="e-meldung" role="status"></p>
-  </section>
-  <section class="pflege" id="pflege" hidden aria-label="Pflege">
-    <div class="pflege-zeile">
-      <label for="p-isin">ISIN anlegen<input id="p-isin" type="text" autocomplete="off" spellcheck="false" placeholder="z. B. IE00B4L5Y983, mehrere mit Komma"></label>
-      <button class="btn primaer" id="p-anlegen">Anlegen</button>
-    </div>
-    <p class="meldung" id="p-meldung" role="status"></p>
-    <div id="p-entwurf"></div>
-    <div id="p-anlagen"></div>
-  </section>
-  <div class="tabs" role="tablist">
-    <button class="tab" role="tab" id="tab-fonds" aria-selected="true">Fonds<span class="n" id="n-fonds"></span></button>
-    <button class="tab" role="tab" id="tab-anleihen" aria-selected="false">Einzelanleihen<span class="n" id="n-anleihen"></span></button>
-  </div>
-  <section class="refs" id="refs" aria-label="Referenzprodukte"></section>
-  <div class="summary" id="summary" aria-label="Status"></div>
-  <div class="filters" id="filters"></div>
-  <div class="bar">
-    <span id="treffer"></span>
-    <span class="links">
-      <label class="check" id="gruppieren-box"><input type="checkbox" id="gruppieren"> nach Index gruppieren</label>
-      <button class="linkbtn" id="zuruecksetzen">Filter zurücksetzen</button>
-    </span>
-  </div>
-  <div class="tablebox"><table id="tabelle"><thead></thead><tbody></tbody></table></div>
-  <div class="more" id="more" hidden><button class="btn" id="mehr">Weitere anzeigen</button></div>
 </div>
-<aside class="detail" id="detail" hidden aria-label="Details"></aside>
-
-<script id="daten" type="application/json">null</script>
-<script>
-let D = null;
-// Eingebettete Daten (Seite aus tools/ansicht_export.py); ohne sie: Live-Modus über die GitHub-Schnittstelle
-let EINGEBETTET = null;
-try { EINGEBETTET = JSON.parse(document.getElementById("daten").textContent) } catch (e) { EINGEBETTET = null }
-
-/* Alle Filterwerte (Status, Kategorien, Funktionen, Anbieter ...) kommen aus den Daten. Die beiden Tabellen hier
-   regeln nur Darstellung: Farbe und Reihenfolge bekannter Status, schönere Namen bekannter Schlüssel. Neue Werte
-   erscheinen automatisch, mit neutraler Farbe bzw. aus dem Schlüssel gebildetem Namen. */
-const STATUS_STIL = {geeignet: ["geeignet", "--ok"], bedingt: ["bedingt", "--warn"], watchlist: ["Watchlist", "--watch"],
-  pruefen: ["prüfen", "--wait"], ausgeschlossen: ["ausgeschlossen", "--bad"]};
-const statusText = (s) => (STATUS_STIL[s] || [s])[0];
-const statusFarbe = (s) => (STATUS_STIL[s] || [s, "--wait"])[1];
-const statusRang = (s) => { const i = Object.keys(STATUS_STIL).indexOf(s); return i < 0 ? 50 : i };
-const BEZ = {aktien_dividende: "Aktien Dividende", unternehmensanleihen_ig: "Unternehmensanleihen IG", laufzeit_etf: "Laufzeit-ETF",
-  anleihen_ultrashort: "Ultrashort", anleihen_aggregate: "Anleihen Aggregate", aus: "ausschüttend", thes: "thesaurierend",
-  primaer: "primär", sekundaer: "sekundär", ohne: "ohne (Gruppe nicht relevant)",
-  keine: "keine nötig (EUR)", ungesichert: "ungesichert (Fremdwährung)"};
-const bez = (k) => BEZ[k] || (String(k).charAt(0).toUpperCase() + String(k).slice(1)).replace(/_/g, " ");
-const nf = (d) => new Intl.NumberFormat("de-DE", {minimumFractionDigits: d, maximumFractionDigits: d});
-const f2 = nf(2), f0 = nf(0), f1 = nf(1);
-const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const datum = (s) => s && /^\d{4}-\d{2}-\d{2}/.test(s) ? `${s.slice(8,10)}.${s.slice(5,7)}.${s.slice(0,4)}` : (s || "–");
-const opt = (arr) => [...new Set(arr.filter(Boolean))].sort((a,b) => a.localeCompare(b, "de"));
-
-function speichern(k, v) { try { localStorage.setItem(k, JSON.stringify(v)) } catch (e) {} }
-function laden(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d } catch (e) { return d } }
-
-/* Andere Anteilsklassen desselben Fonds mit gleicher Absicherung, als anklickbare Links (öffnen die Detailansicht).
-   Der Zwilling (andere Ertragsverwendung, aus der Rangfolge) steht zuerst. */
-function klassenLinks(f) {
-  if (!f.fonds_id) return "";
-  const andere = D.fonds.filter(y => y.fonds_id === f.fonds_id && y.isin !== f.isin && y.absicherung === f.absicherung)
-    .sort((a, b) => (b.isin === f.zwilling) - (a.isin === f.zwilling));
-  if (!andere.length) return "";
-  return `<div class="sub klassen">${andere.map(y => `${y.isin === f.zwilling ? "Zwilling" : "Klasse"}: <a href="#" class="zw" data-oeffne="${y.isin}">${esc(bez(y.ertrag || "") || "–")} · ${y.isin}</a>`).join(" · ")}</div>`;
-}
-const linkText = (l) => l.art === "factsheet" ? "Factsheet" : l.art === "produktseite" ? "Produktseite" : l.art === "boerse" ? "Börse Frankfurt" : "justETF";
-
-function starten(daten) {
-D = daten;
-/* ---------- Konfiguration je Ansicht ---------- */
-const ANSICHTEN = {
-  fonds: {
-    daten: D.fonds,
-    filter: [
-      {id:"q", typ:"text", label:"Suche", ph:"Name, ISIN, Index", klasse:"suche", such: f => `${f.name} ${f.isin} ${f.index} ${f.anbieter}`},
-      {id:"funktion", typ:"select", label:"Funktion", wert: f => f.funktionen},
-      {id:"kategorie", typ:"select", label:"Kategorie", wert: f => f.kategorie, text: bez},
-      {id:"absicherung", typ:"select", label:"Währung/Absicherung", wert: f => f.absicherung, text: bez},
-      {id:"ertrag", typ:"select", label:"Ertrag", wert: f => f.ertrag, text: bez},
-      {id:"anbieter", typ:"select", label:"Anbieter", wert: f => f.anbieter},
-      {id:"prioritaet", typ:"select", label:"Priorität", wert: f => f.prioritaet, text: bez},
-      {id:"esg", typ:"select", label:"ESG-Index", wert: f => f.esg ? "ESG" : "ohne ESG"},
-      {id:"auswahl", typ:"select", label:"Auswahl", wert: f => [f.referenz ? "Referenz" : "", f.merkliste ? "Merkliste" : ""].filter(Boolean)},
-      {id:"termax", typ:"bis", label:"TER bis %", zahl: f => f.ter, fmt: f2},
-      {id:"volmin", typ:"ab", label:"Volumen ab Mio. €", zahl: f => f.volumen, fmt: f0},
-    ],
-    spalten: [
-      {k:"name", t:"Name", cls:"name", sort: f => f.name, html: f => `${esc(f.name)}${f.referenz ? `<span class="badge" title="${esc(f.referenz)}">Referenz</span>` : ""}${f.merkliste ? '<span class="badge merk">Merkliste</span>' : ""}<div class="sub"><span class="isin">${f.isin}</span> · ${esc(f.index || "ohne Index")}</div>${f.referenz ? `<div class="sub">Referenz: ${esc(f.referenz)}${f.referenz_hinweis ? ` · <span class="${f.referenz_hinweis.includes("Warnung") ? "bad" : "warn"}">${esc(f.referenz_hinweis)}</span>` : ""}</div>` : ""}${klassenLinks(f)}`},
-      {k:"status", t:"Status", sort: f => statusRang(f.status), html: f => `<span class="pill s-${f.status}">${statusText(f.status)}</span>`},
-      {k:"funktionen", t:"Funktionen", sort: f => f.funktionen.join(), html: f => f.funktionen.map(x => `<span class="fn">${esc(x)}</span>`).join("") || "–"},
-      {k:"rang", t:"Rang", sort: f => f.rang ?? 99, html: f => f.rang ? `<span class="rang">${f.rang}${f.gleichwertig ? '<span class="g"> =</span>' : ""}${f.rang_basis.startsWith("TER") ? '<span class="g"> TER</span>' : ""}</span>` : "–"},
-      {k:"ter", t:"TER %", cls:"num", sort: f => f.ter ?? 99, html: f => f.ter == null ? "–" : f2.format(f.ter)},
-      {k:"td", t:"TD %", cls:"num", sort: f => f.td ?? 99, html: f => f.td == null ? "–" : f2.format(f.td)},
-      {k:"volumen", t:"Mio. €", cls:"num", sort: f => -(f.volumen ?? 0), html: f => f.volumen == null ? "–" : f0.format(f.volumen)},
-      {k:"ertrag", t:"Ertrag", sort: f => f.ertrag, html: f => f.ertrag === "aus" ? "aus" : f.ertrag === "thes" ? "thes" : "–"},
-      {k:"absicherung", t:"Absicherung", sort: f => f.absicherung, html: f => esc(f.absicherung ? bez(f.absicherung) : "–")},
-      {k:"duration", t:"Duration", cls:"num", sort: f => f.duration ?? 99, html: f => f.duration == null ? (f.band ? `<span class="g">${esc(f.band)} J.</span>` : "–") : f2.format(f.duration)},
-      {k:"link", t:"Quelle", sort: f => f.link.art, html: f => `<a class="ext${f.link.quelle.startsWith("justETF") ? " sek" : ""}" href="${esc(f.link.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${linkText(f.link)} ↗</a>`},
-    ],
-    standardSort: {k:"volumen", dir:1},
-    // Gruppen nach Index-ID (gleicher Index trotz anderer Schreibweise, 22.10.2026) und Absicherung; Text = Indexname
-    gruppe: f => `${f.index_id || f.index || "ohne Index"}|${f.absicherung || ""}`,
-    gruppeText: f => `${f.index || "ohne Index"} · ${f.absicherung ? bez(f.absicherung) : ""}`,
-  },
-  anleihen: {
-    daten: D.anleihen,
-    filter: [
-      {id:"q", typ:"text", label:"Suche", ph:"Name, ISIN, Emittent", klasse:"suche", such: a => `${a.name} ${a.isin} ${a.emittent}`},
-      {id:"funktion", typ:"select", label:"Funktion", wert: a => a.funktionen},
-      {id:"emittent", typ:"select", label:"Emittent", wert: a => a.emittent},
-      {id:"kern", typ:"select", label:"Kern/Peripherie", wert: a => a.kern},
-      {id:"zinsart", typ:"select", label:"Zinsart", wert: a => a.zinsart},
-      {id:"rlmin", typ:"ab", label:"Restlaufzeit ab J.", zahl: a => a.restlaufzeit, fmt: f1},
-      {id:"rlmax", typ:"bis", label:"Restlaufzeit bis J.", zahl: a => a.restlaufzeit, fmt: f1},
-    ],
-    spalten: [
-      {k:"name", t:"Anleihe", cls:"name", sort: a => a.name, html: a => `${esc(a.name)}<div class="sub"><span class="isin">${a.isin}</span> · ${esc(a.emittent)} · ${esc(a.rating || "ohne Rating")}</div>`},
-      {k:"status", t:"Status", sort: a => statusRang(a.status), html: a => `<span class="pill s-${a.status}">${statusText(a.status)}</span>`},
-      {k:"funktionen", t:"Funktionen", sort: a => a.funktionen.join(), html: a => a.funktionen.map(x => `<span class="fn">${esc(x)}</span>`).join("") || "–"},
-      {k:"kupon", t:"Kupon %", cls:"num", sort: a => a.kupon ?? -1, html: a => a.kupon == null ? "–" : f2.format(a.kupon)},
-      {k:"faelligkeit", t:"Fällig", cls:"num", sort: a => a.faelligkeit, html: a => datum(a.faelligkeit)},
-      {k:"restlaufzeit", t:"Rest J.", cls:"num", sort: a => a.restlaufzeit ?? 99, html: a => a.restlaufzeit == null ? "–" : f1.format(a.restlaufzeit)},
-      {k:"stueckelung", t:"Stückelung", cls:"num", sort: a => a.stueckelung ?? 0, html: a => a.stueckelung == null ? "–" : f0.format(a.stueckelung)},
-      {k:"volumen", t:"Volumen Mio.", cls:"num", sort: a => -(a.volumen ?? 0), html: a => a.volumen == null ? "–" : f0.format(a.volumen / 1e6)},
-      {k:"link", t:"Quelle", sort: a => 0, html: a => `<a class="ext" href="${esc(a.link.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Börse Frankfurt ↗</a>`},
-    ],
-    standardSort: {k:"faelligkeit", dir:1},
-    gruppe: null,
-  },
-};
-
-/* ---------- Zustand ---------- */
-const S = laden("wpu-ansicht", {tab: "fonds", fonds: {status: ["geeignet","bedingt"]}, anleihen: {status: ["geeignet"]}, sort: {}, gruppieren: false});
-S.sort = S.sort || {}; S.fonds = S.fonds || {status: []}; S.anleihen = S.anleihen || {status: []};
-let limit = 200, glimit = 50, auswahl = null;
-const offen = new Set();   // aufgeklappte Indexgruppen
-
-const $ = (id) => document.getElementById(id);
-$("stand").textContent = `Fonds freigegeben bis ${datum(D.stand_fonds)} · Einzelanleihen Stand ${datum(D.stand_anleihen)} · erstellt ${datum(D.erstellt)}`;
-$("n-fonds").textContent = D.fonds.length; $("n-anleihen").textContent = D.anleihen.length;
-
-function aufbauen() {
-  const A = ANSICHTEN[S.tab], F = S[S.tab];
-  $("tab-fonds").setAttribute("aria-selected", S.tab === "fonds"); $("tab-anleihen").setAttribute("aria-selected", S.tab === "anleihen");
-  $("gruppieren-box").hidden = !A.gruppe; $("gruppieren").checked = !!S.gruppieren;
-  $("filters").innerHTML = A.filter.map(x => {
-    const id = `f-${S.tab}-${x.id}`, v = F[x.id] ?? "";
-    if (x.typ === "select") return `<label class="${x.klasse || ""}" for="${id}">${x.label}<select id="${id}" data-k="${x.id}"></select></label>`;
-    return `<label class="${x.klasse || ""}" for="${id}">${x.label}<input id="${id}" data-k="${x.id}" type="${x.typ === "text" ? "search" : "text"}" inputmode="${x.typ === "text" ? "search" : "decimal"}" placeholder="${x.ph || ""}" value="${esc(v)}"></label>`;
-  }).join("");
-  $("filters").querySelectorAll("[data-k]").forEach(el => el.addEventListener(el.tagName === "SELECT" ? "change" : "input", () => {
-    F[el.dataset.k] = el.value; limit = 200; zeichnen();
-  }));
-  zeichnen();
-}
-
-/* Facettierte Filter: ein Filter erfüllt, wenn der Wert leer ist oder die Zeile ihn trifft. */
-function erfuellt(x, fl, v) {
-  if (v === undefined || v === null || v === "") return true;
-  if (fl.typ === "text") return fl.such(x).toLowerCase().includes(String(v).toLowerCase());
-  if (fl.typ === "select") { const w = fl.wert(x); return Array.isArray(w) ? w.includes(v) : w === v }
-  const n = parseFloat(String(v).replace(",", ".")); if (isNaN(n)) return true;
-  const z = fl.zahl(x); if (z == null) return false;
-  return fl.typ === "bis" ? z <= n + 1e-9 : z >= n - 1e-9;
-}
-// Zeile erfüllt alle gesetzten Filter außer dem genannten (für die möglichen Werte dieses Filters)
-function passtAusser(x, ausser) {
-  const A = ANSICHTEN[S.tab], F = S[S.tab];
-  if (ausser !== "status" && F.status?.length && !F.status.includes(x.status)) return false;
-  return A.filter.every(fl => fl.id === ausser || erfuellt(x, fl, F[fl.id]));
-}
-function facetten() {
-  const A = ANSICHTEN[S.tab], F = S[S.tab];
-  for (const fl of A.filter) {
-    const el = document.getElementById(`f-${S.tab}-${fl.id}`); if (!el) continue;
-    const rest = A.daten.filter(x => passtAusser(x, fl.id));
-    if (fl.typ === "select") {
-      const n = new Map();
-      for (const x of rest) { const w = fl.wert(x); for (const v of (Array.isArray(w) ? w : [w])) if (v) n.set(v, (n.get(v) || 0) + 1) }
-      const gew = F[fl.id] || "";
-      if (gew && !n.has(gew)) n.set(gew, 0);   // gewählter Wert bleibt sichtbar, auch ohne Treffer
-      const werte = [...n.keys()].sort((a, b) => String(fl.text ? fl.text(a) : a).localeCompare(String(fl.text ? fl.text(b) : b), "de"));
-      el.innerHTML = `<option value="">alle (${rest.length})</option>` + werte.map(w =>
-        `<option value="${esc(w)}"${w === gew ? " selected" : ""}>${esc(fl.text ? fl.text(w) : w)} (${n.get(w)})</option>`).join("");
-    } else if (fl.typ === "ab" || fl.typ === "bis") {
-      const z = rest.map(fl.zahl).filter(v => v != null);
-      el.placeholder = z.length ? `${fl.fmt.format(Math.min(...z))} – ${fl.fmt.format(Math.max(...z))}` : "keine Werte";
-    }
-  }
-}
-
-function zeichnen() {
-  const A = ANSICHTEN[S.tab], F = S[S.tab];
-  // Statusübersicht: Anzahl unter den übrigen Filtern
-  const z = {};
-  A.daten.filter(x => passtAusser(x, "status")).forEach(x => z[x.status] = (z[x.status] || 0) + 1);
-  (F.status || []).forEach(s => { if (!(s in z) && A.daten.some(x => x.status === s)) z[s] = 0 });
-  $("summary").innerHTML = Object.keys(z).sort((a, b) => statusRang(a) - statusRang(b) || a.localeCompare(b)).map(s =>
-    `<button class="sumchip" data-s="${esc(s)}" aria-pressed="${(F.status || []).includes(s)}"><span class="dot" style="background:var(${statusFarbe(s)})"></span>${esc(statusText(s))} <b>${z[s]}</b></button>`).join("");
-  facetten();
-  $("summary").querySelectorAll("button").forEach(b => b.onclick = () => {
-    const st = new Set(F.status || []); st.has(b.dataset.s) ? st.delete(b.dataset.s) : st.add(b.dataset.s); F.status = [...st]; limit = 200; zeichnen();
-  });
-  const sort = S.sort[S.tab] || A.standardSort, sp = A.spalten.find(s => s.k === sort.k) || A.spalten[0];
-  const zeilen = A.daten.filter(x => passtAusser(x, null));
-  const cmp = (a, b) => { const x = sp.sort(a), y = sp.sort(b); return (typeof x === "number" && typeof y === "number" ? x - y : String(x ?? "").localeCompare(String(y ?? ""), "de")) * sort.dir };
-  const gruppe = A.gruppe && S.gruppieren;
-  $("treffer").textContent = `${zeilen.length} von ${A.daten.length} ${S.tab === "fonds" ? "Fonds" : "Einzelanleihen"}`;
-  $("tabelle").querySelector("thead").innerHTML = `<tr>${A.spalten.map(s => `<th data-k="${s.k}" class="${s.cls === "num" ? "num" : ""}" ${!gruppe && s.k === sort.k ? `aria-sort="${sort.dir > 0 ? "ascending" : "descending"}"` : ""}>${s.t}</th>`).join("")}</tr>`;
-  $("tabelle").querySelectorAll("th").forEach(th => th.onclick = () => {
-    if (gruppe) return;   // in der Gruppenansicht gilt die feste Ordnung (Index nach größtem ETF, darin Rang)
-    const alt = S.sort[S.tab] || A.standardSort; S.sort[S.tab] = {k: th.dataset.k, dir: alt.k === th.dataset.k ? -alt.dir : 1}; zeichnen();
-  });
-  const zeileHtml = (x, extra = "") => `<tr tabindex="0" data-isin="${x.isin}" class="${auswahl === x.isin ? "sel" : ""}${extra}">${A.spalten.map(s => `<td class="${s.cls || ""}">${s.html(x)}</td>`).join("")}</tr>`;
-  let html = "", mehr = 0, mehrText = "";
-  if (gruppe) {
-    // Indizes absteigend nach dem Volumen ihres größten ETF; je Index die ersten 3 nach Rang, Rest aufklappbar
-    const G = new Map();
-    for (const x of zeilen) { const g = A.gruppe(x); if (!G.has(g)) G.set(g, []); G.get(g).push(x) }
-    const rangKey = (x) => [x.rang == null ? 1 : 0, (x.rang_basis || "").startsWith("TD") ? 0 : 1, x.reihenfolge ?? 999, -(x.volumen || 0)];
-    const vgl = (a, b) => { const p = rangKey(a), q = rangKey(b); for (let i = 0; i < p.length; i++) if (p[i] !== q[i]) return p[i] - q[i]; return a.name.localeCompare(b.name, "de") };
-    const gruppen = [...G.entries()].map(([g, xs]) => ({g, t: A.gruppeText ? A.gruppeText(xs[0]) : g, xs: xs.sort(vgl), max: Math.max(0, ...xs.map(x => x.volumen || 0))}))
-      .sort((a, b) => b.max - a.max || a.t.localeCompare(b.t, "de"));
-    for (const gr of gruppen) {   // je Fonds eine Position: thesaurierend bevorzugt, außer der Ertrag-Filter ist gesetzt
-      const gesehen = new Map();
-      for (const x of gr.xs) {
-        const k = x.fonds_id || x.isin, alt = gesehen.get(k);
-        if (!alt || (!F.ertrag && alt.ertrag !== "thes" && x.ertrag === "thes")) gesehen.set(k, x);
-      }
-      gr.klassen = gr.xs.length; gr.xs = [...gesehen.values()].sort(vgl);
-    }
-    for (const {g, t, xs, max, klassen} of gruppen.slice(0, glimit)) {
-      const auf = offen.has(g);
-      html += `<tr class="gruppe"><td colspan="${A.spalten.length}">${esc(t)} <span class="isin">· ${xs.length} Fonds${klassen > xs.length ? ` (${klassen} Anteilsklassen)` : ""} · größter ETF ${f0.format(max)} Mio. €</span></td></tr>`;
-      xs.slice(0, auf ? xs.length : 3).forEach(x => html += zeileHtml(x));
-      if (xs.length > 3) html += `<tr class="aufklapp"><td colspan="${A.spalten.length}"><button class="linkbtn" data-g="${esc(g)}">${auf ? "Weniger anzeigen" : `${xs.length - 3} weitere anzeigen`}</button></td></tr>`;
-    }
-    mehr = gruppen.length - glimit; mehrText = `Weitere ${Math.min(50, mehr)} Indizes anzeigen`;
-  } else {
-    zeilen.sort((a, b) => cmp(a, b) || a.name.localeCompare(b.name, "de"));
-    zeilen.slice(0, limit).forEach(x => html += zeileHtml(x));
-    mehr = zeilen.length - limit; mehrText = `Weitere ${Math.min(200, mehr)} anzeigen`;
-  }
-  $("tabelle").querySelector("tbody").innerHTML = html || `<tr><td colspan="${A.spalten.length}" class="leer">Keine Treffer. Filter lockern oder zurücksetzen.</td></tr>`;
-  $("tabelle").querySelectorAll("tbody tr[data-isin]").forEach(tr => {
-    tr.onclick = () => oeffnen(tr.dataset.isin);
-    tr.onkeydown = (e) => { if (e.key === "Enter") oeffnen(tr.dataset.isin) };
-  });
-  $("tabelle").querySelectorAll("a[data-oeffne]").forEach(a => a.onclick = (e) => { e.preventDefault(); e.stopPropagation(); oeffnen(a.dataset.oeffne) });
-  $("tabelle").querySelectorAll("tr.aufklapp button").forEach(b => b.onclick = () => {
-    offen.has(b.dataset.g) ? offen.delete(b.dataset.g) : offen.add(b.dataset.g); zeichnen();
-  });
-  $("more").hidden = mehr <= 0;
-  $("mehr").textContent = mehrText;
-  speichern("wpu-ansicht", S);
-}
-
-/* ---------- Detail ---------- */
-function zeile(t, v, q) { return v === undefined || v === null || v === "" ? "" : `<dt>${t}</dt><dd>${v}${q ? `<span class="q">${esc(q)}</span>` : ""}</dd>` }
-function liste(t, arr) { return arr && arr.length ? `<div class="sect"><h3>${t}</h3><ul class="plain">${arr.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "" }
-
-function oeffnen(isin) {
-  auswahl = isin;
-  const f = D.fonds.find(x => x.isin === isin), a = f ? null : D.anleihen.find(x => x.isin === isin);
-  const x = f || a; if (!x) return;
-  const H = (f && f.herkunft) || {};
-  let html = `<div class="dkopf"><div><h2>${esc(x.name)}</h2><div class="isin">${x.isin}</div></div><button class="close" id="schliessen" aria-label="Details schließen">×</button></div>
-    <div class="tags"><span class="pill s-${x.status}">${statusText(x.status)}</span>${x.funktionen.map(y => `<span class="fn">${esc(y)}</span>`).join("")}</div>
-    <a class="dlink${x.link.quelle.startsWith("justETF") ? " sek" : ""}" href="${esc(x.link.url)}" target="_blank" rel="noopener">${linkText(x.link)} öffnen ↗</a>
-    <div class="hint">Quelle des Links: ${esc(x.link.quelle)}${x.link.quelle.startsWith("justETF") ? ". Für diesen Fonds liegt noch kein Link zum Anbieter-Factsheet vor." : ""}</div>`;
-  if (f && (f.referenz || f.merkliste)) html += `<div class="sect"><h3>Auswahl</h3><dl>${zeile("Referenz für", esc(f.referenz || "–"))}${f.referenz_hinweis ? zeile("Hinweis", `<span class="${f.referenz_hinweis.includes("Warnung") ? "bad" : "warn"}">${esc(f.referenz_hinweis)}</span>`) : ""}${f.merkliste ? zeile("Merkliste", "ja") : ""}</dl></div>`;
-  html += liste("Ausschlussgründe und Bedingungen", x.gruende) + liste("Hinweise", x.hinweise.filter(h => !x.gruende.includes(h))) + (f ? liste("Offene Punkte", f.offen) : "");
-  if (f) {
-    const d = f.duration_info;
-    html += `<div class="sect"><h3>Merkmale</h3><dl>
-      ${zeile("Anbieter", esc(f.anbieter))}
-      ${zeile("Kategorie", esc(bez(f.kategorie)))}
-      ${zeile("Index", esc(f.index || "–"), [!f.index_id ? "" : f.index_id.startsWith("name:") ? "Zuordnung über den Namen (keine belegte Index-ID)" : "Index-ID " + f.index_id, f.esg ? "ESG-Index (laut Indexname, Regel der Grobsortierung)" : ""].filter(Boolean).join(" · "))}
-      ${f.index_pruefung ? zeile("Index prüfen", `<span class="warn">${esc(f.index_pruefung)}</span>`, "Abgleich mit Index-Tickern laut Borsa Italiana (Sekundärquelle)") : ""}
-      ${zeile("Priorität", esc(bez(f.prioritaet)), f.gruppe ? "Gruppe der Grobsortierung: " + f.gruppe : "")}
-      ${zeile("TER", f.ter == null ? "–" : f2.format(f.ter) + " %", H.ter_prozent)}
-      ${zeile("Fondsvolumen", f.volumen == null ? "–" : f0.format(f.volumen) + " Mio. €", f.volumen_quelle)}
-      ${zeile("Tracking Difference", f.td == null ? "nicht messbar" : f2.format(f.td) + " % p. a.", f.td_herkunft ? "Mittel der letzten 5 Kalenderjahre, " + f.td_herkunft : (f.td != null ? "Mittel der letzten 5 Kalenderjahre (trackingdifferences.com)" : ""))}
-      ${zeile("Rang", f.rang ? `${f.rang}${f.gleichwertig ? " (gleichwertig)" : ""}` : "–", f.rang_basis ? "Basis: " + f.rang_basis : "")}
-      ${zeile("Ertrag", f.ertrag === "aus" ? "ausschüttend" + (f.ausschuettung ? ", " + esc(f.ausschuettung) : "") : f.ertrag === "thes" ? "thesaurierend" : "–", H.ertrag)}
-      ${zeile("Basiswährung", esc(f.waehrung || "–"), H.basiswaehrung)}
-      ${zeile("Absicherung", esc(f.absicherung ? bez(f.absicherung) : "–"), H.absicherung)}
-      ${f.band || f.duration != null ? zeile("Laufzeitband", esc(f.band || "–") + (f.band ? " Jahre" : ""), H.laufzeitband) : ""}
-      ${f.duration != null ? zeile("Duration", f2.format(f.duration) + (d && d.art ? " (" + esc(d.art) + ")" : ""), d ? [d.quelle, d.stand && "Stand " + datum(d.stand)].filter(Boolean).join(", ") : "") : (["staatsanleihen","unternehmensanleihen_ig","anleihen_aggregate","inflationsindexiert","pfandbriefe","anleihen_ultrashort"].includes(f.kategorie) ? zeile("Duration", "fehlt") : "")}
-      ${zeile("Auflage", datum(f.auflage), H.auflage_fonds)}
-      ${zeile("Domizil", esc(f.domizil || "–"))}
-      ${zeile("Replikation", esc(f.replikation || "–"))}
-      ${zeile("Wertpapierleihe", esc(f.wertpapierleihe || "–"))}
-      ${zeile("Freigegeben", datum(f.freigegeben))}
-    </dl></div>`;
-    html += `<div class="sect"><h3>Deutsche Börsenplätze${f.xetra ? " · Xetra" : ""}</h3><div class="tags">${f.boersen.map(m => `<span class="mic">${esc(m)}</span>`).join("") || "keine Angabe"}</div></div>`;
-    const kl = D.fonds.filter(y => y.isin !== f.isin && y.fonds_id === f.fonds_id);
-    if (kl.length) html += `<div class="sect"><h3>Weitere Anteilsklassen desselben Fonds</h3><div class="verw">${kl.map(knopf).join("")}</div></div>`;
-    const gl = D.fonds.filter(y => y.fonds_id !== f.fonds_id && (y.index_id || y.index) && (y.index_id || y.index) === (f.index_id || f.index) && y.absicherung === f.absicherung).sort((p, q) => (p.reihenfolge ?? 999) - (q.reihenfolge ?? 999));
-    if (gl.length) html += `<div class="sect"><h3>Andere Fonds auf denselben Index, Absicherung ${esc(bez(f.absicherung))}</h3><div class="verw">${gl.map(knopf).join("")}</div></div>`;
-  } else {
-    html += `<div class="sect"><h3>Merkmale</h3><dl>
-      ${zeile("Emittent", esc(a.emittent))}${zeile("Rating", esc(a.rating || "–"), "mittleres von drei Ratings")}
-      ${zeile("Kern/Peripherie", esc(a.kern || "–"))}${zeile("Währung", esc(a.waehrung))}${zeile("Zinsart", esc(a.zinsart))}
-      ${zeile("Kupon", a.kupon == null ? "–" : f2.format(a.kupon) + " %")}${zeile("Fälligkeit", datum(a.faelligkeit))}
-      ${zeile("Restlaufzeit", a.restlaufzeit == null ? "–" : f1.format(a.restlaufzeit) + " Jahre")}
-      ${zeile("Stückelung", a.stueckelung == null ? "–" : f0.format(a.stueckelung) + " €")}
-      ${zeile("Emissionsvolumen", a.volumen == null ? "–" : f0.format(a.volumen / 1e6) + " Mio. €")}
-      ${zeile("Strip", esc(a.strip))}${zeile("Datenquelle", esc(a.quelle), "Stand " + datum(a.stand))}
-    </dl></div>
-    <div class="sect"><h3>Deutsche Börsenplätze</h3><div class="tags">${a.boersen.map(m => `<span class="mic">${esc(m)}</span>`).join("") || "keine Angabe"}</div></div>`;
-  }
-  const el = $("detail"); el.innerHTML = html; el.hidden = false; el.scrollTop = 0;
-  $("schliessen").onclick = schliessen; $("schliessen").focus({preventScroll: true});
-  el.querySelectorAll("[data-isin]").forEach(b => b.onclick = () => oeffnen(b.dataset.isin));
-  document.querySelectorAll("tbody tr.sel").forEach(t => t.classList.remove("sel"));
-  document.querySelector(`tbody tr[data-isin="${isin}"]`)?.classList.add("sel");
-}
-function knopf(y) {
-  return `<button data-isin="${y.isin}"><span>${esc(y.name)}<br><span class="isin">${y.isin}</span></span><span class="r">${y.rang ? "Rang " + y.rang + " · " : ""}${y.ter == null ? "" : f2.format(y.ter) + " %"}<br><span class="pill s-${y.status}">${statusText(y.status)}</span></span></button>`;
-}
-function schliessen() { $("detail").hidden = true; auswahl = null; document.querySelectorAll("tbody tr.sel").forEach(t => t.classList.remove("sel")) }
-document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("detail").hidden) schliessen() });
-
-$("tab-fonds").onclick = () => { S.tab = "fonds"; limit = 200; schliessen(); aufbauen() };
-$("tab-anleihen").onclick = () => { S.tab = "anleihen"; limit = 200; schliessen(); aufbauen() };
-$("gruppieren").onchange = (e) => { S.gruppieren = e.target.checked; zeichnen() };
-$("mehr").onclick = () => { if (S.gruppieren && ANSICHTEN[S.tab].gruppe) glimit += 50; else limit += 200; zeichnen() };
-$("zuruecksetzen").onclick = () => { S[S.tab] = {status: S.tab === "fonds" ? ["geeignet","bedingt"] : ["geeignet"]}; S.sort[S.tab] = null; limit = 200; aufbauen() };
-/* Übersicht der Referenzprodukte je Funktion (config/referenzprodukte.yaml) */
-(function refsPanel() {
-  // Reihenfolge wie in config/referenzprodukte.yaml
-  const nachIsin = Object.fromEntries(D.fonds.map(f => [f.isin, f]));
-  const refs = (D.referenzen || []).filter(r => nachIsin[r.isin]).map(r => [r.bez, nachIsin[r.isin]]);
-  const fehlen = (D.referenzen || []).filter(r => !nachIsin[r.isin]);
-  const merk = (D.merkliste || []).map(i => nachIsin[i]).filter(Boolean);
-  if (!refs.length && !merk.length && !fehlen.length) { $("refs").hidden = true; return }
-  const warn = refs.filter(([, f]) => f.referenz_hinweis).length;
-  $("refs").innerHTML = `<h2><span>Referenzprodukte · ${refs.length}</span><span>${warn ? `<span class="warn">${warn} mit Hinweis</span>` : "keine Hinweise"}</span></h2>
-    <div class="refbox"><table><tbody>${refs.map(([r, f]) => `<tr><td class="f">${esc(r)}</td><td><a href="#" data-oeffne="${f.isin}">${esc(f.name)}</a> <span class="isin">${f.isin}</span>${f.referenz_hinweis ? `<br><span class="${f.referenz_hinweis.includes("Warnung") ? "bad" : "warn"}">${esc(f.referenz_hinweis)}</span>` : ""}</td><td class="num">${f.ter == null ? "" : f2.format(f.ter) + " %"}</td></tr>`).join("")}
-    ${fehlen.map(r => `<tr><td class="f">${esc(r.bez)}</td><td class="bad">Warnung: ${r.isin} nicht im Universum</td><td></td></tr>`).join("")}
-    ${merk.map(f => `<tr><td class="f">Merkliste</td><td><a href="#" data-oeffne="${f.isin}">${esc(f.name)}</a> <span class="isin">${f.isin}</span></td><td class="num">${f.ter == null ? "" : f2.format(f.ter) + " %"}</td></tr>`).join("")}</tbody></table></div>`;
-  $("refs").querySelectorAll("a[data-oeffne]").forEach(a => a.onclick = (e) => { e.preventDefault(); oeffnen(a.dataset.oeffne) });
-})();
-aufbauen();
-if (!EINGEBETTET) pflegeZeigen();
-}
-
-/* ---------- Live-Modus: Daten und Aktionen über die GitHub-Schnittstelle ---------- */
-const GH = "https://api.github.com";
-const WF = "bedienung.yml";
-function cfg() { return laden2("wpu-verbindung", {}) }
-function laden2(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d } catch (e) { return d } }
-function speichern2(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true } catch (e) { return false } }
-async function gh(pfad, opt = {}) {
-  const c = cfg();
-  const r = await fetch(GH + "/repos/" + c.repo + pfad, {cache: "no-store", ...opt,
-    headers: {"Authorization": "Bearer " + c.token, "X-GitHub-Api-Version": "2022-11-28", ...(opt.headers || {})}});
-  if (!r.ok && r.status !== 204) {
-    const t = await r.text().catch(() => "");
-    throw new Error(r.status === 401 ? "Schlüssel ungültig oder abgelaufen (401)." :
-      r.status === 403 ? "Schlüssel hat nicht die nötigen Rechte (403): Contents read, Actions read and write." :
-      r.status === 404 ? "Repo, Datei oder Workflow nicht gefunden (404). Repo-Name und Rechte des Schlüssels prüfen." :
-      `GitHub antwortet mit ${r.status}: ${t.slice(0, 160)}`);
-  }
-  return r;
-}
-function el(id) { return document.getElementById(id) }
-function einstZeigen(meldung) {
-  const c = cfg(); el("e-repo").value = c.repo || ""; el("e-token").value = c.token || "";
-  el("einst").hidden = false; el("e-meldung").textContent = meldung || "";
-}
-
-// Startseite für Besucher ohne gespeicherten Schlüssel: nur Unterhaltung, keine Daten
-const L_TIPPS = [
+<script>const L_TIPPS = [
   "Kaufe niedrig, verkaufe hoch. Mehr steht in keinem Lehrbuch.",
   "Diversifikation heißt: nicht alle Eier in einen Korb. Und nicht alle Körbe in ein Raumschiff.",
   "Zeit im Markt schlägt Timing des Marktes. Zeit auf dieser Seite schlägt leider gar nichts.",
@@ -655,7 +144,6 @@ const L_ANTWORTEN = {
   "hallo": "Hallo, Erdling. Ich bin der Bordcomputer. Ich verwalte Planeten, keine Vermögen.",
   "hi": "Hallo, Erdling. Ich bin der Bordcomputer. Ich verwalte Planeten, keine Vermögen.",
   "hilfe": "Hilfe ist unterwegs. Geschätzte Ankunft: wenn sich die Zinskurve normalisiert.",
-  "passwort": "Netter Versuch.",
   "geld": "Geld ist hier oben schwerelos. Unten auf der Erde leider nicht.",
   "tipp": "Drück den gelben Knopf. Der ist genau dafür da.",
   "zins": "Der Zins wird von der EZB festgelegt, nicht von mir. Ich habe es versucht.",
@@ -668,9 +156,9 @@ const L_UNBEKANNT = [
   "Das kann ich nicht beantworten. Ich bin ein Bordcomputer, kein Finanzinfluencer.",
 ];
 function landen() {
+  const el = (id) => document.getElementById(id);
   document.body.classList.add("gast");
-  el("landung").hidden = false;
-  // Sterne: zwei Schichten aus Schatten-Punkten, eine davon funkelt; Kursband doppelt für eine lückenlose Schleife
+  el("landung-huelle").hidden = false;
   const punkte = (n, gr) => Array.from({length: n}, () => `${(Math.random() * 1500).toFixed(0)}px ${(Math.random() * 1100).toFixed(0)}px 0 ${gr} rgba(255,255,255,${(.35 + Math.random() * .6).toFixed(2)})`).join(",");
   const [s1, s2] = el("l-sterne").children; s1.style.boxShadow = punkte(140, "0px"); s2.style.boxShadow = punkte(45, ".6px");
   const spur = el("l-spur"); spur.append(spur.firstElementChild.cloneNode(true)); spur.lastElementChild.setAttribute("aria-hidden", "true");
@@ -695,109 +183,28 @@ function landen() {
     k.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); los() } });
   });
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) try { el("l-system").pauseAnimations() } catch (e) {}
-  // schmale Bildschirme: Ausschnitt eng um die Umlaufbahnen, damit die Planeten nicht winzig werden
   const schmal = matchMedia("(max-width: 760px)");
   const ausschnitt = () => el("l-system").setAttribute("viewBox", schmal.matches ? "104 0 392 380" : "0 0 600 380");
   ausschnitt(); schmal.addEventListener("change", ausschnitt);
-  // Zugang zur Anmeldung: das Wort "repo" in der Eingabezeile (kein sichtbarer Link)
   const eingabe = el("l-eingabe");
-  const zugang = () => {
-    el("landung").hidden = true; document.body.classList.remove("gast");
-    einstZeigen(); el("e-repo").focus(); scrollTo(0, 0);
-  };
-  eingabe.addEventListener("input", () => { if (eingabe.value.trim().toLowerCase() === "repo") zugang() });
   el("l-frage").onsubmit = (e) => {
     e.preventDefault();
     const q = eingabe.value.trim().toLowerCase(); eingabe.value = "";
     if (!q) return;
-    if (q === "repo") return zugang();
     const woerter = q.split(/[^a-z0-9äöüß]+/);
     const treffer = Object.entries(L_ANTWORTEN).find(([k]) => woerter.includes(k));
     schreiben(treffer ? treffer[1] : L_UNBEKANNT[Math.floor(Math.random() * L_UNBEKANNT.length)]);
   };
-}
-async function live() {
-  el("einst-oeffnen").hidden = false;
-  el("einst-oeffnen").onclick = () => einstZeigen();
-  el("e-speichern").onclick = () => {
-    const repo = el("e-repo").value.trim().replace(/^https:\/\/github.com\//, "").replace(/\/$/, "");
-    const token = el("e-token").value.trim();
-    if (!/^[\w.-]+\/[\w.-]+$/.test(repo) || !token) { el("e-meldung").textContent = "Bitte Repo als besitzer/name und den Schlüssel eintragen."; return }
-    if (!speichern2("wpu-verbindung", {repo, token})) { el("e-meldung").textContent = "Der Browser erlaubt keine Speicherung (privates Fenster?)."; return }
-    location.reload();
-  };
-  el("e-loeschen").onclick = () => { try { localStorage.removeItem("wpu-verbindung") } catch (e) {} ; location.reload() };
-  const c = cfg();
-  if (!c.repo || !c.token) { landen(); return }
-  el("stand").textContent = "Daten werden geladen …";
+}</script>
+<script type="text/plain" id="sternkarte">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</script>
+<script>
+(async () => {
+  let k = null;
   try {
-    const r = await gh("/contents/data/ansicht.json?ref=main", {headers: {"Accept": "application/vnd.github.raw+json"}});
-    starten(await r.json());
-  } catch (e) {
-    el("stand").textContent = "";
-    einstZeigen("Laden fehlgeschlagen: " + e.message + (String(e.message).includes("404") ? " Die Datei data/ansicht.json entsteht beim ersten Wochenlauf oder bei der ersten Aktion." : ""));
-  }
-}
-function pflegeZeigen() {
-  el("pflege").hidden = false;
-  el("p-anlegen").onclick = () => {
-    const isins = el("p-isin").value.toUpperCase().split(/[\s,;]+/).filter(Boolean);
-    const falsch = isins.filter(i => !/^[A-Z]{2}[A-Z0-9]{9}\d$/.test(i));
-    if (!isins.length || falsch.length) { el("p-meldung").textContent = falsch.length ? "Keine gültige ISIN: " + falsch.join(", ") : "Bitte eine ISIN eintragen."; return }
-    aktion("anlegen", isins);
-  };
-  // Entwurf
-  const E = D.entwurf || [];
-  el("p-entwurf").innerHTML = E.length ? `<h2>Entwurf · ${E.length} warten auf Freigabe</h2>
-    <div class="tablebox"><table class="ent"><thead><tr><th><input type="checkbox" id="p-alle" aria-label="Alle auswählen"></th><th>Name</th><th>Vorprüfung</th><th class="num">TER %</th><th class="num">Mio.</th><th>Offen</th></tr></thead><tbody>
-    ${E.map(e => `<tr><td><input type="checkbox" class="p-wahl" value="${esc(e.isin)}" aria-label="${esc(e.name)} auswählen"></td>
-      <td class="name">${esc(e.name)}<div class="sub"><span class="isin">${esc(e.isin)}</span> · ${esc(e.index || "ohne Index")} · ${esc(bez(e.kategorie || ""))}${e.gruppe ? " · " + esc(e.gruppe) : ""}</div></td>
-      <td><span class="pill s-${esc(e.status)}">${esc(statusText(e.status || "–"))}</span>${e.gruende ? `<div class="sub">${esc(e.gruende)}</div>` : ""}</td>
-      <td class="num">${e.ter == null ? "–" : f2.format(e.ter)}</td><td class="num">${e.volumen == null ? "–" : f0.format(e.volumen) + " " + esc(e.volumen_waehrung || "")}</td>
-      <td class="name">${(e.offen || []).map(esc).join("<br>") || "–"}</td></tr>`).join("")}</tbody></table></div>
-    <div class="einst-knoepfe"><button class="btn primaer" id="p-freigeben">Ausgewählte freigeben</button><button class="btn" id="p-verwerfen">Ausgewählte verwerfen</button></div>` : "";
-  if (E.length) {
-    const gewaehlt = () => [...document.querySelectorAll(".p-wahl:checked")].map(x => x.value);
-    el("p-alle").onchange = (ev) => document.querySelectorAll(".p-wahl").forEach(x => x.checked = ev.target.checked);
-    el("p-freigeben").onclick = () => { const g = gewaehlt(); if (g.length) aktion("freigeben", g); else el("p-meldung").textContent = "Bitte Einträge auswählen." };
-    el("p-verwerfen").onclick = () => { const g = gewaehlt(); if (g.length) aktion("verwerfen", g); else el("p-meldung").textContent = "Bitte Einträge auswählen." };
-  }
-  const A = (D.anlagen || []).slice(0, 8);
-  el("p-anlagen").innerHTML = A.length ? `<h2>Letzte Anlagen</h2><ul class="plain">${A.map(a => `<li><span class="isin">${esc(a.isin)}</span> ${esc(a.name || "")}: <b>${esc(a.fazit)}</b>${a.gruende ? ` <span class="hint">(${esc(a.gruende)})</span>` : ""} <span class="hint">${esc(datum((a.zeit || "").slice(0, 10)))}</span></li>`).join("")}</ul>` : "";
-}
-async function aktion(art, isins) {
-  const knoepfe = document.querySelectorAll("#pflege button");
-  knoepfe.forEach(b => b.disabled = true);
-  const m = el("p-meldung");
-  const text = {anlegen: "Anlegen", freigeben: "Freigabe", verwerfen: "Verwerfen"}[art];
-  try {
-    const seit = Date.now() - 5000;
-    await gh(`/actions/workflows/${WF}/dispatches`, {method: "POST", headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ref: "main", inputs: {aktion: art, isins: isins.join(",")}})});
-    m.textContent = `${text} gestartet (${isins.join(", ")}). Der Lauf auf GitHub dauert meist 1–3 Minuten …`;
-    let lauf = null;
-    for (let i = 0; i < 120; i++) {
-      await new Promise(r => setTimeout(r, 5000));
-      const r = await gh(`/actions/workflows/${WF}/runs?event=workflow_dispatch&per_page=5`);
-      const runs = (await r.json()).workflow_runs || [];
-      lauf = runs.find(x => Date.parse(x.created_at) >= seit) || lauf;
-      if (!lauf) continue;
-      m.innerHTML = `${esc(text)} läuft (${esc(lauf.status)}) · <a href="${esc(lauf.html_url)}" target="_blank" rel="noopener">Lauf auf GitHub ↗</a>`;
-      if (lauf.status === "completed") break;
-    }
-    if (lauf && lauf.conclusion === "success") {
-      m.textContent = `${text} abgeschlossen. Die Seite lädt die neuen Daten …`;
-      setTimeout(() => location.reload(), 4000);
-    } else {
-      m.innerHTML = `${esc(text)} nicht erfolgreich${lauf ? ` (${esc(lauf.conclusion || lauf.status)}) · <a href="${esc(lauf.html_url)}" target="_blank" rel="noopener">Protokoll ansehen ↗</a>` : " (kein Lauf gefunden)"}`;
-      knoepfe.forEach(b => b.disabled = false);
-    }
-  } catch (e) {
-    m.textContent = text + " fehlgeschlagen: " + e.message;
-    knoepfe.forEach(b => b.disabled = false);
-  }
-}
-if (EINGEBETTET) starten(EINGEBETTET); else live();
+    const b = Uint8Array.from(atob(document.getElementById("sternkarte").textContent.trim()), c => c.charCodeAt(0));
+    k = JSON.parse(await new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).text());
+  } catch (e) {}
+  if (k) new Function("k", k.vorab)(k); else landen();
+})();
 </script>
-
 </body></html>
