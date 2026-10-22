@@ -155,6 +155,12 @@ body.gast .wrap > :not(#landung):not(#einst) { display: none !important }
 .l-bord .knopf { justify-self: start; font: inherit; font-size: 13px; color: var(--space); background: var(--sun); border: 0; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500 }
 .l-bord .knopf:hover { filter: brightness(1.08) }
 .l-bord .tipp { margin: 0; font-size: 12px; color: var(--space-muted) }
+.l-frage { display: flex; gap: 6px; align-items: center; border-top: 1px solid var(--space-line); padding-top: 10px }
+.l-frage label { color: var(--sun); font-family: var(--mono); font-size: 13.5px }
+.l-frage input { flex: 1; min-width: 0; font: inherit; font-family: var(--mono); font-size: 13.5px; color: var(--space-fg); background: transparent;
+  border: 0; border-bottom: 1px solid var(--space-line); padding: 5px 2px; outline: none }
+.l-frage input:focus { border-bottom-color: var(--sun) }
+.l-frage input::placeholder { color: var(--space-muted); opacity: .8 }
 .l-band { overflow: hidden; border-block: 1px solid var(--space-line); margin-inline: -22px; padding-block: 7px; font-family: var(--mono); font-size: 12px; color: var(--space-muted); white-space: nowrap }
 .l-band .inhalt { display: inline-block; padding-right: 3em }
 .l-band .spur { display: inline-block }
@@ -217,6 +223,7 @@ body.gast .wrap > :not(#landung):not(#einst) { display: none !important }
         <h2>Bordcomputer</h2>
         <p class="ausgabe" id="l-ausgabe">Systeme bereit. Tippe auf einen Himmelskörper oder frag nach einem Anlagetipp.</p>
         <button class="knopf" id="l-tipp">Anlagetipp anfordern</button>
+        <form class="l-frage" id="l-frage" autocomplete="off"><label for="l-eingabe">&gt;</label><input id="l-eingabe" type="text" spellcheck="false" autocapitalize="off" placeholder="Frag den Bordcomputer …" enterkeyhint="send"></form>
         <p class="tipp">Garantiert frei von Anlageberatung.</p>
       </div>
     </div>
@@ -228,7 +235,6 @@ body.gast .wrap > :not(#landung):not(#einst) { display: none !important }
       <b>SATURN</b> Ringe physisch besichert</span></span></div>
     <div class="l-fuss">
       <p>Keine Anlageberatung. Nicht einmal eine Anlagemeinung. Alle Kurse frei erfunden.</p>
-      <button class="linkbtn" id="l-zugang">Zugang mit Schlüssel</button>
     </div>
   </section>
   <header>
@@ -643,6 +649,24 @@ const L_KOERPER = {
   gold: "Gold: glänzt seit 5.000 Jahren und zahlt seit 5.000 Jahren keine Zinsen. Sehr konsequent.",
   komet: "Spielgeld: laut Konzept „vorerst leer“. Fliegt trotzdem gelegentlich vorbei.",
 };
+const L_ANTWORTEN = {
+  "bitcoin": "Krypto liegt außerhalb dieses Universums. Steht in der Gruppe „irrelevant“, gleich neben Hebel und Short.",
+  "krypto": "Krypto liegt außerhalb dieses Universums. Steht in der Gruppe „irrelevant“, gleich neben Hebel und Short.",
+  "hallo": "Hallo, Erdling. Ich bin der Bordcomputer. Ich verwalte Planeten, keine Vermögen.",
+  "hi": "Hallo, Erdling. Ich bin der Bordcomputer. Ich verwalte Planeten, keine Vermögen.",
+  "hilfe": "Hilfe ist unterwegs. Geschätzte Ankunft: wenn sich die Zinskurve normalisiert.",
+  "passwort": "Netter Versuch.",
+  "geld": "Geld ist hier oben schwerelos. Unten auf der Erde leider nicht.",
+  "tipp": "Drück den gelben Knopf. Der ist genau dafür da.",
+  "zins": "Der Zins wird von der EZB festgelegt, nicht von mir. Ich habe es versucht.",
+  "42": "Richtig. Aber was war noch mal die Frage?",
+};
+const L_UNBEKANNT = [
+  "Befehl nicht erkannt. Versuch es mit Geduld, die rentiert sich meistens.",
+  "Diese Anfrage wurde an die Rechtsabteilung weitergeleitet. Die Rechtsabteilung ist ein Asteroid.",
+  "Verarbeite … verarbeite … Ergebnis: langfristig steigend, kurzfristig keine Ahnung.",
+  "Das kann ich nicht beantworten. Ich bin ein Bordcomputer, kein Finanzinfluencer.",
+];
 function landen() {
   document.body.classList.add("gast");
   el("landung").hidden = false;
@@ -675,7 +699,22 @@ function landen() {
   const schmal = matchMedia("(max-width: 760px)");
   const ausschnitt = () => el("l-system").setAttribute("viewBox", schmal.matches ? "104 0 392 380" : "0 0 600 380");
   ausschnitt(); schmal.addEventListener("change", ausschnitt);
-  el("l-zugang").onclick = () => { einstZeigen(); el("einst").scrollIntoView({behavior: "smooth", block: "start"}); el("e-repo").focus({preventScroll: true}) };
+  // Zugang zur Anmeldung: das Wort "repo" in der Eingabezeile (kein sichtbarer Link)
+  const eingabe = el("l-eingabe");
+  const zugang = () => {
+    el("landung").hidden = true; document.body.classList.remove("gast");
+    einstZeigen(); el("e-repo").focus(); scrollTo(0, 0);
+  };
+  eingabe.addEventListener("input", () => { if (eingabe.value.trim().toLowerCase() === "repo") zugang() });
+  el("l-frage").onsubmit = (e) => {
+    e.preventDefault();
+    const q = eingabe.value.trim().toLowerCase(); eingabe.value = "";
+    if (!q) return;
+    if (q === "repo") return zugang();
+    const woerter = q.split(/[^a-z0-9äöüß]+/);
+    const treffer = Object.entries(L_ANTWORTEN).find(([k]) => woerter.includes(k));
+    schreiben(treffer ? treffer[1] : L_UNBEKANNT[Math.floor(Math.random() * L_UNBEKANNT.length)]);
+  };
 }
 async function live() {
   el("einst-oeffnen").hidden = false;
