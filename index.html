@@ -117,10 +117,120 @@ ul.plain { margin: 0; padding-left: 18px; display: grid; gap: 3px; font-size: 13
 .verw button:hover { border-color: var(--accent) }
 .verw .r { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap }
 @media (prefers-reduced-motion: no-preference) { .detail { animation: rein .16s ease-out } @keyframes rein { from { transform: translateX(24px); opacity: .6 } } }
+
+/* Startseite für Besucher ohne Schlüssel ("Landung"): bewusst immer Nachthimmel, in beiden Farbschemata gleich */
+:root {
+  --space: #0b1020; --space-2: #151d38; --space-fg: #e6ebf7; --space-muted: #a3aecb; --space-line: rgba(163,174,203,.22);
+  --sun: #f2b84b; --sun-glow: rgba(242,184,75,.28); --p-liq: #5cc8c2; --p-lauf: #7aa2ec; --p-anker: #c3cad6; --p-gold: #e9c45e; --p-komet: #f3f6ff;
+}
+body.gast { background: var(--space) }
+body.gast .wrap > :not(#landung):not(#einst) { display: none !important }
+.landung { position: relative; color: var(--space-fg); border-radius: 14px; overflow: hidden; display: grid; gap: 18px; padding: 28px 22px 22px;
+  background: radial-gradient(120% 90% at 50% 0%, var(--space-2), var(--space) 70%) }
+.landung > * { position: relative }
+.landung h1 { font-size: clamp(24px, 5vw, 38px); line-height: 1.15; max-width: 22ch }
+.landung .lead { margin: 0; font-size: 15.5px; color: var(--space-muted); max-width: 62ch; text-wrap: pretty }
+.landung .lead b { color: var(--space-fg); font-weight: 500 }
+.l-buehne { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 18px; align-items: center }
+@media (max-width: 760px) { .l-buehne { grid-template-columns: 1fr } }
+.l-system { width: 100%; height: auto; display: block; overflow: visible }
+.l-system .bahn { fill: none; stroke: var(--space-line); stroke-dasharray: 2 5 }
+.l-system .koerper { cursor: pointer; outline: none }
+.l-system .koerper:focus-visible .ring { stroke: var(--space-fg); stroke-width: 1.5 }
+.l-system .koerper .ring { fill: transparent; stroke: transparent }
+.l-system .koerper:hover .ring { stroke: var(--space-line) }
+.l-system text { fill: var(--space-muted); font-family: var(--font); font-size: 11px; text-anchor: middle; pointer-events: none }
+.l-system .aktiv text { fill: var(--space-fg) }
+.l-system text.auf-sonne, .l-system .aktiv text.auf-sonne { fill: #5a3410; font-size: 10.5px; font-weight: 600 }
+@media (max-width: 760px) { .l-system text { font-size: 13px } }
+.l-sterne { position: absolute; inset: 0; pointer-events: none }
+.l-sterne i { position: absolute; left: 0; top: 0; width: 1px; height: 1px; border-radius: 50%; background: transparent }
+@media (prefers-reduced-motion: no-preference) { .l-sterne i.b { animation: funkeln 4.5s ease-in-out infinite alternate } @keyframes funkeln { from { opacity: .25 } } }
+.l-bord { background: rgba(10,14,30,.72); border: 1px solid var(--space-line); border-radius: 10px; padding: 14px; display: grid; gap: 10px; min-height: 190px; align-content: start }
+.l-bord h2 { margin: 0; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--space-muted); font-weight: 500 }
+.l-bord .ausgabe { margin: 0; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; color: var(--space-fg); min-height: 6.2em }
+.l-bord .ausgabe::before { content: "> "; color: var(--sun) }
+.l-bord .ausgabe.tippt::after { content: "▍"; color: var(--sun); animation: blinken 1s steps(1) infinite }
+@keyframes blinken { 50% { opacity: 0 } }
+.l-bord .knopf { justify-self: start; font: inherit; font-size: 13px; color: var(--space); background: var(--sun); border: 0; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500 }
+.l-bord .knopf:hover { filter: brightness(1.08) }
+.l-bord .tipp { margin: 0; font-size: 12px; color: var(--space-muted) }
+.l-band { overflow: hidden; border-block: 1px solid var(--space-line); margin-inline: -22px; padding-block: 7px; font-family: var(--mono); font-size: 12px; color: var(--space-muted); white-space: nowrap }
+.l-band .inhalt { display: inline-block; padding-right: 3em }
+.l-band .spur { display: inline-block }
+.l-band b { color: var(--space-fg); font-weight: 500 }
+.l-band .plus { color: #7fd6a5 } .l-band .minus { color: #f19a91 }
+.l-fuss { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 18px; font-size: 12.5px; color: var(--space-muted) }
+.l-fuss p { margin: 0 }
+.l-fuss .linkbtn { color: var(--space-muted) }
+.l-fuss .linkbtn:hover { color: var(--space-fg) }
+@media (prefers-reduced-motion: no-preference) {
+  .l-band .spur { animation: laufband 80s linear infinite }
+  @keyframes laufband { to { transform: translateX(-50%) } }
+}
+@media (prefers-reduced-motion: reduce) { .l-band { white-space: normal; padding-inline: 22px } .l-band .inhalt + .inhalt { display: none } }
 </style>
 </head><body>
 
 <div class="wrap">
+  <section class="landung" id="landung" hidden aria-labelledby="l-titel">
+    <div class="l-sterne" id="l-sterne" aria-hidden="true"><i></i><i class="b"></i></div>
+    <h1 id="l-titel">Willkommen im Wertpapier&shy;universum</h1>
+    <p class="lead">Du bist hier gelandet, vermutlich aus Versehen. Kein Problem: <b>Die meisten Anleger landen irgendwo aus Versehen</b>, und oft geht es trotzdem gut aus. Dieses Universum gehört zu einem privaten Werkzeug. Die Daten bleiben unter Verschluss, zu sehen gibt es nur die Planeten.</p>
+    <div class="l-buehne">
+      <svg class="l-system" id="l-system" viewBox="0 0 600 380" role="group" aria-label="Sonnensystem der Anlagefunktionen; jeder Himmelskörper ist ein Knopf">
+        <defs>
+          <radialGradient id="l-sonne" cx="45%" cy="40%" r="60%"><stop offset="0" stop-color="#fff3c9"/><stop offset=".55" stop-color="var(--sun)"/><stop offset="1" stop-color="#d88a2a"/></radialGradient>
+          <radialGradient id="l-glow"><stop offset="0" stop-color="var(--sun-glow)"/><stop offset="1" stop-color="transparent"/></radialGradient>
+        </defs>
+        <circle class="bahn" cx="300" cy="190" r="64"/><circle class="bahn" cx="300" cy="190" r="104"/>
+        <circle class="bahn" cx="300" cy="190" r="142"/><circle class="bahn" cx="300" cy="190" r="178"/>
+        <circle cx="300" cy="190" r="70" fill="url(#l-glow)"/>
+        <g class="koerper" data-k="sonne" tabindex="0" role="button" aria-label="Aktienprämie">
+          <circle class="ring" cx="300" cy="190" r="44"/><circle cx="300" cy="190" r="36" fill="url(#l-sonne)"/>
+          <text class="auf-sonne" x="300" y="187">Aktien-</text><text class="auf-sonne" x="300" y="200">prämie</text>
+        </g>
+        <g><animateTransform attributeName="transform" type="rotate" from="0 300 190" to="360 300 190" dur="16s" repeatCount="indefinite"/>
+          <g transform="translate(364 190)"><g class="koerper" data-k="liq" tabindex="0" role="button" aria-label="Liquiditätsreserve">
+            <animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="16s" repeatCount="indefinite"/>
+            <circle class="ring" r="16"/><circle r="7" fill="var(--p-liq)"/><text y="22">Liquidität</text></g></g></g>
+        <g><animateTransform attributeName="transform" type="rotate" from="120 300 190" to="480 300 190" dur="30s" repeatCount="indefinite"/>
+          <g transform="translate(404 190)"><g class="koerper" data-k="lauf" tabindex="0" role="button" aria-label="Laufzeitprämie">
+            <animateTransform attributeName="transform" type="rotate" from="-120" to="-480" dur="30s" repeatCount="indefinite"/>
+            <circle class="ring" r="18"/><circle r="10" fill="var(--p-lauf)"/><text y="26">Laufzeitprämie</text></g></g></g>
+        <g><animateTransform attributeName="transform" type="rotate" from="230 300 190" to="590 300 190" dur="46s" repeatCount="indefinite"/>
+          <g transform="translate(442 190)"><g class="koerper" data-k="anker" tabindex="0" role="button" aria-label="Crash-Anker">
+            <animateTransform attributeName="transform" type="rotate" from="-230" to="-590" dur="46s" repeatCount="indefinite"/>
+            <circle class="ring" r="18"/><circle r="11" fill="var(--p-anker)"/>
+            <path d="M0 -6 v11 M-4 -3 h8 M-6 1 q6 7 12 0" fill="none" stroke="#3b4556" stroke-width="1.6" stroke-linecap="round"/>
+            <text y="27">Crash-Anker</text></g></g></g>
+        <g><animateTransform attributeName="transform" type="rotate" from="300 300 190" to="660 300 190" dur="64s" repeatCount="indefinite"/>
+          <g transform="translate(478 190)"><g class="koerper" data-k="gold" tabindex="0" role="button" aria-label="Gold">
+            <animateTransform attributeName="transform" type="rotate" from="-300" to="-660" dur="64s" repeatCount="indefinite"/>
+            <circle class="ring" r="16"/><path d="M-8 3 l4 -9 h8 l4 9 z" fill="var(--p-gold)"/><text y="22">Gold</text></g></g></g>
+        <g class="koerper" data-k="komet" tabindex="0" role="button" aria-label="Spielgeld">
+          <animateMotion dur="23s" repeatCount="indefinite" path="M-60 30 C 180 60, 420 330, 680 360" keyPoints="0;1;1" keyTimes="0;.35;1" calcMode="linear"/>
+          <circle class="ring" r="16"/><path d="M0 0 L-34 -9 L-34 9 Z" fill="var(--p-komet)" opacity=".25"/><circle r="5" fill="var(--p-komet)"/><text y="20">Spielgeld</text>
+        </g>
+      </svg>
+      <div class="l-bord" aria-live="polite">
+        <h2>Bordcomputer</h2>
+        <p class="ausgabe" id="l-ausgabe">Systeme bereit. Tippe auf einen Himmelskörper oder frag nach einem Anlagetipp.</p>
+        <button class="knopf" id="l-tipp">Anlagetipp anfordern</button>
+        <p class="tipp">Garantiert frei von Anlageberatung.</p>
+      </div>
+    </div>
+    <div class="l-band" aria-label="Kurse aus dem All (frei erfunden)"><span class="spur" id="l-spur"><span class="inhalt">
+      <b>STERNSTAUB</b> <span class="plus">+∞ %</span> · <b>SCHWARZES LOCH</b> <span class="minus">−100 %</span> (Totalverlust, wie im Basisinformationsblatt angekündigt) ·
+      <b>MOND</b> 0,00 € (keine Notierung an einem EU-Handelsplatz) · <b>MARS-ETF</b> TER 0,00 %, Auflage 2091, Watchlist ·
+      <b>ANDROMEDA-ANLEIHE</b> Kupon 0 %, fällig in 2,5 Mrd. Jahren, Kündigungsrecht des Emittenten: ausgeschlossen ·
+      <b>MILCHSTRASSE ACC</b> thesaurierend seit 13,6 Mrd. Jahren · <b>KOMET</b> Handel vorübergehend ausgesetzt ·
+      <b>SATURN</b> Ringe physisch besichert</span></span></div>
+    <div class="l-fuss">
+      <p>Keine Anlageberatung. Nicht einmal eine Anlagemeinung. Alle Kurse frei erfunden.</p>
+      <button class="linkbtn" id="l-zugang">Zugang mit Schlüssel</button>
+    </div>
+  </section>
   <header>
     <h1>Wertpapieruniversum</h1>
     <div class="kopfrechts"><span class="stand" id="stand"></span><button class="linkbtn" id="einst-oeffnen" hidden>Einstellungen</button></div>
@@ -509,6 +619,64 @@ function einstZeigen(meldung) {
   const c = cfg(); el("e-repo").value = c.repo || ""; el("e-token").value = c.token || "";
   el("einst").hidden = false; el("e-meldung").textContent = meldung || "";
 }
+
+// Startseite für Besucher ohne gespeicherten Schlüssel: nur Unterhaltung, keine Daten
+const L_TIPPS = [
+  "Kaufe niedrig, verkaufe hoch. Mehr steht in keinem Lehrbuch.",
+  "Diversifikation heißt: nicht alle Eier in einen Korb. Und nicht alle Körbe in ein Raumschiff.",
+  "Zeit im Markt schlägt Timing des Marktes. Zeit auf dieser Seite schlägt leider gar nichts.",
+  "Bei 8 % Rendite verdoppelt sich Geld in etwa 9 Jahren. Diese Seite verdoppelt nur die Neugier.",
+  "Wer sein Depot täglich anschaut, sieht Schwankung. Wer es selten anschaut, sieht Rendite. Wer hier hinschaut, sieht Sterne.",
+  "Gold zahlt keine Zinsen. Diese Seite auch nicht.",
+  "Panik ist keine Strategie. Ein Crash-Anker schon eher.",
+  "Die Tracking Difference dieser Seite gegenüber deinen Erwartungen: deutlich negativ.",
+  "Houston, wir haben eine Vorabpauschale.",
+  "Der beste Zeitpunkt zu investieren war vor 20 Jahren. Der zweitbeste ist nicht um 3 Uhr nachts auf einer fremden Seite.",
+  "Kosten sind die einzige Rendite, die garantiert ist. Leider die der anderen.",
+  "Ein Komet ist auch nur ein Stern, der zu schnell zu viel wollte.",
+];
+const L_KOERPER = {
+  sonne: "Aktienprämie: die Sonne in der Mitte. Wärmt auf lange Sicht zuverlässig, verbrennt kurzfristig gelegentlich die Finger.",
+  liq: "Liquiditätsreserve: kreist ganz nah an der Sonne und ist da, wenn's brennt. Zinsen etwa wie Tagesgeld, Spannung etwa keine.",
+  lauf: "Laufzeitprämie: Je weiter draußen, desto mehr Zins. Und desto kälter wird es, wenn die Zinsen steigen.",
+  anker: "Crash-Anker: lange Staatsanleihen bester Bonität. Langweilig, bis plötzlich alle anderen Planeten brennen.",
+  gold: "Gold: glänzt seit 5.000 Jahren und zahlt seit 5.000 Jahren keine Zinsen. Sehr konsequent.",
+  komet: "Spielgeld: laut Konzept „vorerst leer“. Fliegt trotzdem gelegentlich vorbei.",
+};
+function landen() {
+  document.body.classList.add("gast");
+  el("landung").hidden = false;
+  // Sterne: zwei Schichten aus Schatten-Punkten, eine davon funkelt; Kursband doppelt für eine lückenlose Schleife
+  const punkte = (n, gr) => Array.from({length: n}, () => `${(Math.random() * 1500).toFixed(0)}px ${(Math.random() * 1100).toFixed(0)}px 0 ${gr} rgba(255,255,255,${(.35 + Math.random() * .6).toFixed(2)})`).join(",");
+  const [s1, s2] = el("l-sterne").children; s1.style.boxShadow = punkte(140, "0px"); s2.style.boxShadow = punkte(45, ".6px");
+  const spur = el("l-spur"); spur.append(spur.firstElementChild.cloneNode(true)); spur.lastElementChild.setAttribute("aria-hidden", "true");
+  const aus = el("l-ausgabe");
+  let zuletzt = -1, timer = null;
+  const schreiben = (t) => {   // Schreibmaschine; ohne Bewegung sofort
+    clearInterval(timer);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) { aus.textContent = t; return }
+    let i = 0; aus.textContent = ""; aus.classList.add("tippt");
+    timer = setInterval(() => { aus.textContent = t.slice(0, ++i); if (i >= t.length) { clearInterval(timer); aus.classList.remove("tippt") } }, 18);
+  };
+  el("l-tipp").onclick = () => {
+    let i; do { i = Math.floor(Math.random() * L_TIPPS.length) } while (i === zuletzt && L_TIPPS.length > 1);
+    zuletzt = i; schreiben(L_TIPPS[i]);
+  };
+  document.querySelectorAll("#l-system .koerper").forEach(k => {
+    const los = () => {
+      document.querySelectorAll("#l-system .aktiv").forEach(x => x.classList.remove("aktiv"));
+      k.classList.add("aktiv"); schreiben(L_KOERPER[k.dataset.k]);
+    };
+    k.addEventListener("click", los);
+    k.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); los() } });
+  });
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) try { el("l-system").pauseAnimations() } catch (e) {}
+  // schmale Bildschirme: Ausschnitt eng um die Umlaufbahnen, damit die Planeten nicht winzig werden
+  const schmal = matchMedia("(max-width: 760px)");
+  const ausschnitt = () => el("l-system").setAttribute("viewBox", schmal.matches ? "104 0 392 380" : "0 0 600 380");
+  ausschnitt(); schmal.addEventListener("change", ausschnitt);
+  el("l-zugang").onclick = () => { einstZeigen(); el("einst").scrollIntoView({behavior: "smooth", block: "start"}); el("e-repo").focus({preventScroll: true}) };
+}
 async function live() {
   el("einst-oeffnen").hidden = false;
   el("einst-oeffnen").onclick = () => einstZeigen();
@@ -521,7 +689,7 @@ async function live() {
   };
   el("e-loeschen").onclick = () => { try { localStorage.removeItem("wpu-verbindung") } catch (e) {} ; location.reload() };
   const c = cfg();
-  if (!c.repo || !c.token) { einstZeigen(); return }
+  if (!c.repo || !c.token) { landen(); return }
   el("stand").textContent = "Daten werden geladen …";
   try {
     const r = await gh("/contents/data/ansicht.json?ref=main", {headers: {"Accept": "application/vnd.github.raw+json"}});
